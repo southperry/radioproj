@@ -131,3 +131,9 @@ ul li:hover {
   background-color: #ddd;
   border: black 1px solid;
 }
+
+.clicked {
+  color: black;
+  background-color: #a5a5a5;
+  border: black 1px solid;
+}

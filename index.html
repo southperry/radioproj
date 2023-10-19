@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Producer View</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
   </head>
   <body>
     <header class="navcontainer">
@@ -15,8 +16,8 @@
           <a href="#">Listener</a>
         </div>
         <div class="navsearch">
-          <form class="searchform" action="#">
-            <input type="text" placeholder="General search!" />
+          <form id="generalSearchForm" class="searchform" action="#" onsubmit="return generalSearch(this)">
+            <input name="generalSearchInput" type="text" placeholder="General search!" />
             <button type="submit">Search</button>
           </form>
         </div>
@@ -30,17 +31,13 @@
         <div class="djlist">
           DJ List
           <hr />
-          <ul>
-            <li>DJ 1</li>
-            <li>DJ 2</li>
-            <li>DJ 3</li>
-            <li>DJ 4</li>
+          <ul id="listofdjs">
           </ul>
         </div>
         <div class="timeslot">
           MM/DD/YY
           <hr />
-          <ul>
+          <ul id="listoftimes">
             <li>10AM - 11AM</li>
             <li>11AM - 12PM</li>
             <li>12PM - 1PM</li>
@@ -50,11 +47,11 @@
         <div class="playlist">
           DJ's Playlist
           <hr />
-          <ul>
-            <li>Playlist Song 1<span class="listicon">➖</span></li>
-            <li>Playlist Song 2<span class="listicon">➖</span></li>
-            <li>Playlist Song 3<span class="listicon">➖</span></li>
-            <li>Playlist Song 4<span class="listicon">➖</span></li>
+          <ul id="listofsongs">
+            <li>Chart Topper - Singer<span class="listicon">➖</span></li>
+            <li>Song 2 - Artist Man<span class="listicon">➖</span></li>
+            <li>Song Song - Singer 2<span class="listicon">➖</span></li>
+            <li>Another Song - Another Artist<span class="listicon">➖</span></li>
           </ul>
         </div>
         <div class="songadd">
@@ -64,20 +61,21 @@
                 type="text"
                 style="width: 100%"
                 placeholder="Search for song name here!"
+                id="songsearchinput"
               />
               <button type="submit">Search</button>
             </form>
           </div>
-          <ul>
-            <li>Song 1 <span class="listicon">➕</span></li>
-            <li>Song 2 <span class="listicon">➕</span></li>
-            <li>Song 3 <span class="listicon">➕</span></li>
-            <li>Song 4<span class="listicon">➕</span></li>
+          <ul id="searchsongs">
+            <li>Eternal Song <span class="listicon">➕</span></li>
+            <li>Song of Forever <span class="listicon">➕</span></li>
+            <li>Template Song <span class="listicon">➕</span></li>
+            <li>Song with no words...<span class="listicon">➕</span></li>
           </ul>
         </div>
       </div>
       <br />
-      <a id="save" href="#">Save</a>
+      <button id="save" onclick="alert('Saved configuration!')">Save</button>
     </section>
     <footer>
       <p>Copyright 2023</p>
