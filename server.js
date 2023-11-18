@@ -60,10 +60,6 @@ async function main() {
   const DJModel = mongoose.model('DJ', DJ);
   const PlaylistModel = mongoose.model('Playlist', Playlist);
 
-  // get song list and dj list
-  djsObjs = await DJModel.find();
-  songsObjs = await SongModel.find();
-
   // get song playing
   let song = "";
   await client.connect();
@@ -74,8 +70,6 @@ async function main() {
   song = songObj.title;
   client.close();
 
-  var session;
-
   // routes
   app.get(['/'], async (req, res) => {
     res.render('pages/logonpage', {
@@ -85,9 +79,8 @@ async function main() {
   });
 
   app.post(['/login'], async (req, res) => {
-    session = req.session;
-    if(req.body.user) {
-      session.user = req.body.user
+    if(req.body.user == "Producer") {
+      req.session.user = req.body.user
       res.redirect('/producer');
     } else {
       res.redirect('/');
@@ -95,9 +88,10 @@ async function main() {
   });
 
   app.get(['/producer'], async (req, res) => {
-    session = req.session;
-    if(session.user) {
-      songObjs = await SongModel.find()
+    if(req.session.user) {
+      // get song list and dj list
+      djsObjs = await DJModel.find();
+      songsObjs = await SongModel.find();
 
       res.render('pages/producer', {
         role: "Producer",
@@ -131,12 +125,10 @@ async function main() {
   });
 
   app.post(['/playlistupdate'], async (req, res) => {
-    session = req.session;
-
-    //console.log(req.body)
-
-    if(session.user) {
-      songObjs = await SongModel.find()
+    if(req.session.user) {
+      // get song list and dj list
+      djsObjs = await DJModel.find();
+      songsObjs = await SongModel.find();
 
       res.render('pages/producer', {
         role: "Producer",

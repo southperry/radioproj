@@ -20,7 +20,7 @@ body {
 }
 
 /* Each navigation button, uses a for simple linking */
-.navbar a {
+.navbar a, .btn {
   text-decoration: none;
   color: black;
   padding: 10px;
