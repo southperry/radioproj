@@ -6,6 +6,27 @@ body {
   text-align: center;
 }
 
+.dark {
+  color: white;
+  background-color: rgb(16, 54, 58);
+}
+
+#logindiv {
+  /*border: black 2px solid;*/
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 3px rgb(207, 230, 238);
+  margin: 50px;
+  padding: 20px;
+}
+
+/**/
+#songsearchinput, #logintext {
+  border: 0;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 3px rgb(196, 196, 196);
+}
+
 /* Navigation bar container, uses flex */
 .navbar {
   display: flex;
@@ -26,8 +47,12 @@ body {
   padding: 10px;
   margin-left: 10px;
   margin-top: 10px;
+  margin-right: 10px;
   width: 100%;
-  border: black 1px solid;
+  background-color: rgb(159, 211, 216);
+  /*border: black 2px solid;*/
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 3px rgb(207, 230, 238);
 }
 
 /* Container for navigation search */
@@ -41,13 +66,18 @@ body {
 
 /* Change button styling to be consistent flat style */
 .navsearch button,
-#save {
+#save, #loginbutton, #modeButton {
   padding: 10px;
-  background-color: white;
   color: black;
+  background-color: rgb(159, 211, 216);
   text-decoration: none;
-  border: black 1px solid;
+  /*border: black 1px solid;*/
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(207, 230, 238);
 }
+
+
 
 /* Search text, Keep consistent spacing and style */
 .navsearch input[type="text"] {
@@ -69,7 +99,9 @@ body {
 
 /* Add border to navbar container */
 .navcontainer {
-  border: black 1px solid;
+  border: 0;
+  padding-bottom: 5px;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
 }
 
 /* Main content grid */
@@ -84,29 +116,57 @@ body {
 
 /* Used as seperator / Title bar */
 hr {
-  border: black 0.5px solid;
+  border: 0;
+  margin: 5;
+}
+
+/* Titles for boxes */
+.title {
+ font-weight: bold;
+ margin: 5px;
+ padding: 5px;
+ border: 0;
 }
 
 /* Grid content arrangement */
 .djlist {
   grid-area: 1 / 1 / 2 / 2;
-  border: black 1px solid;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
 }
 
 .timeslot {
   grid-area: 1 / 2 / 2 / 3;
-  border: black 1px solid;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
 }
 
 .playlist {
   grid-area: 2 / 1 / 3 / 3;
-  border: black 1px solid;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
 }
 
 .songadd {
   grid-area: 1 / 3 / 3 / 4;
-  border: black 1px solid;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
 }
+
+
+/* DJ CSS */
+.djtimeslot {
+  grid-area: 1 / 1 / 3 / 2;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
+}
+
+.djplaylist {
+  grid-area: 1 / 2 / 3 / 2;
+  border: 0;
+  box-shadow: 0px 0px 10px 3px rgb(195, 223, 232);
+}
+
 
 /* Icon in each list item */
 .listicon {

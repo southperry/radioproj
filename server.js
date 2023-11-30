@@ -24,17 +24,16 @@ const Song = new Schema({
   genre: { type: String, default: '' }
 });
 
+const Timeslot = new Schema({
+  timeslot: { type: String },
+  songs: [{ type: String, default: '' }]
+});
+
 const DJ = new Schema({
   name: { type: String, default: '' },
   listed: { type: Boolean },
   age: { type: Number, min: 1 },
-  times: [{ type: String, default: '' }]
-});
-
-const Playlist = new Schema({
-  djName: { type: String },
-  timeslot: { type: String },
-  songs: [{ type: String, default: '' }]
+  times: [Timeslot]
 });
 
 app.use(express.static('assets'));
@@ -54,11 +53,13 @@ app.use(session({
   store: store
 }));
 
+app.use(express.json({limit:'1mb'}));
+
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1/radioproj');
   const SongModel = mongoose.model('Song', Song);
   const DJModel = mongoose.model('DJ', DJ);
-  const PlaylistModel = mongoose.model('Playlist', Playlist);
+  const TimeslotModel = mongoose.model('Timeslot', Timeslot);
 
   // get song playing
   let song = "";
@@ -79,16 +80,22 @@ async function main() {
   });
 
   app.post(['/login'], async (req, res) => {
+    let djObj = await DJModel.findOne({ name : req.body.user });
     if(req.body.user == "Producer") {
+      // only let "Producer" use the producer page
       req.session.user = req.body.user
       res.redirect('/producer');
+    } else if(djObj) {
+      // only let them use the dj page if they are a DJ in the database
+      req.session.user = req.body.user;
+      res.redirect('/dj');
     } else {
       res.redirect('/');
     }
   });
 
   app.get(['/producer'], async (req, res) => {
-    if(req.session.user) {
+    if(req.session.user == "Producer") {
       // get song list and dj list
       djsObjs = await DJModel.find();
       songsObjs = await SongModel.find();
@@ -104,11 +111,27 @@ async function main() {
     }
   });
 
-  app.get('/dj', function (req, res) {
-    res.render('pages/dj', {
-      role: "DJ",
-      currentSong: song
-    });
+  app.get(['/dj'], async (req, res) => {
+    let djObj = await DJModel.findOne({ name : req.session.user });
+    
+    if(djObj) {
+      if(req.session.user == djObj.name) {
+        songsObjs = await SongModel.find();
+        djsObjs = await DJModel.find();
+  
+        res.render('pages/dj', {
+          role: "DJ",
+          currentSong: song,
+          songList: songsObjs,
+          djsList: djsObjs,
+          djName: req.session.user
+        });
+      } else {
+        res.redirect('/');
+      }
+    } else {
+      res.redirect('/');
+    }
   });
 
   app.get('/listener', function (req, res) {
@@ -130,12 +153,19 @@ async function main() {
       djsObjs = await DJModel.find();
       songsObjs = await SongModel.find();
 
-      res.render('pages/producer', {
-        role: "Producer",
-        currentSong: song,
-        songList: songsObjs,
-        djsList: djsObjs
+      let dj = req.body.djName;
+      let timeslot = req.body.timeslot;
+      let songsNew = req.body.songs;
+      
+      theDJ = await DJModel.findOne({ name : dj });
+      
+      theDJ.times.forEach((timeslotObj) => {
+        if(timeslotObj.timeslot == timeslot) {
+          timeslotObj.songs = songsNew;
+        }
       });
+
+      res = await theDJ.save();
     } else {
       res.redirect('/');
     }

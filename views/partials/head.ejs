@@ -7,5 +7,14 @@
     var djs = <%- JSON.stringify(djsList) %>;
     var songs = <%- JSON.stringify(songList) %>;
 </script>
+<script src="/producer.js"></script>
 <% } %>
-<script src="/script.ejs"></script>
+
+<% if(role === "DJ") { %>
+    <script>
+        var djs = <%- JSON.stringify(djsList) %>;
+        var songs = <%- JSON.stringify(songList) %>;
+        var loggedInDJ = <%- JSON.stringify(djName) %>;
+    </script>
+    <script src="/dj.js"></script>
+<% } %>

@@ -33,17 +33,23 @@ function outputPlaylist() {
         playlist.songs.push(song);
     }
 
-    console.log(JSON.stringify(playlist))
-
+    // update playlist on server
     fetch('/playlistupdate', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(playlist)
     })
-    .then((response) => response.json())
-    .then((json) => console.log(json));
+    .then((response) => console.log(response));
+
+    // update new playlist internally
+    for(let i = 0; i < djs.length; i++) {
+        if(djs[i].name == selectedDJ) {
+            for(let j = 0; j < djs[i].times.length; j++) {
+                djs[i].times[j].songs = playlist.songs;
+                return;
+            }
+        }
+    }
 }
 
 function searchSongListeners() {
@@ -71,6 +77,30 @@ function searchSongListeners() {
     }
 }
 
+function populatePlaylist(DJName, selectedTime, songs) {
+    let playlistSongs = document.getElementById('listofsongs');
+    playlistSongs.innerHTML = "";
+
+    for(let i = 0; i < songs.length; i++) {
+            let songList = document.getElementById("listofsongs");
+            let songItem = document.createElement("li");
+            let songSpan = document.createElement("span");
+
+            songSpan.setAttribute("class", "listicon");
+            songSpan.appendChild(document.createTextNode("➖"));
+
+            songItem.appendChild(document.createTextNode(songs[i]));
+            songItem.appendChild(songSpan);
+
+            songList.appendChild(songItem);
+
+
+            songItem.addEventListener('click', function() {
+                songItem.remove();
+            });
+    }
+}
+
 addEventListener("DOMContentLoaded", (event) => {
     // Load DJs
     let djList = document.getElementById("listofdjs");
@@ -91,19 +121,23 @@ addEventListener("DOMContentLoaded", (event) => {
                             timelist.innerHTML = "";
                             for(let j = 0; j < djs[i].times.length; j++) {
                                 let tempLI = document.createElement("li");
-                                tempLI.appendChild(document.createTextNode(djs[i].times[j]));
+                                tempLI.appendChild(document.createTextNode(djs[i].times[j].timeslot));
                                 timelist.appendChild(tempLI);
 
                                 tempLI.addEventListener("click", function(e) {
                                     if(e.target) {
                                         let timeText = e.target.textContent;
                                         selectedTime = timeText;
+
+                                        /* populate playlist */
+                                        populatePlaylist(DJName, selectedTime, djs[i].times[j].songs);
                                     }
                                 });
                             }
                         break;
                     }
                 }
+                e.target.style.backgroundColor = "lightblue";
             }
         });
     }
